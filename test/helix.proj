@@ -4,23 +4,12 @@
   <Sdk Name="Microsoft.DotNet.Helix.Sdk" Version="2.0.0-beta.19066.4" />
 
   <Target Name="Gather" BeforeTargets="Test">
-    <!-- <ReadLinesFromFile File="$(MSBuildThisFileDirectory)csprojs">
-      <Output TaskParameter="Lines" ItemName="ProjectsToTest"/>  
-    </ReadLinesFromFile> -->
-
     <ItemGroup>
-      <ProjectsToTest Include="$(MSBuildThisFileDirectory)..\src\Antiforgery\test\Microsoft.AspNetCore.Antiforgery.Test.csproj" />
+      <ProjectsToTest Include="$(ProjectsToTest)" />
     </ItemGroup>
-
-    <!-- passing
-      <ProjectsToTest Include="$(MSBuildThisFileDirectory)..\src\AuthSamples\test\AuthSamples.FunctionalTests\AuthSamples.FunctionalTests.csproj" />
-      <ProjectsToTest Include="$(MSBuildThisFileDirectory)..\src\Azure\AzureAD\test\FunctionalTests\Microsoft.AspNetCore.Authentication.AzureAD.FunctionalTests.csproj" />
-      <ProjectsToTest Include="$(MSBuildThisFileDirectory)..\src\Azure\AzureAppServicesIntegration\test\Microsoft.AspNetCore.AzureAppServicesIntegration.Tests.csproj" />
-
-    -->
     <MSBuild Projects="@(ProjectsToTest)"
               Targets="CreateHelixPayload"
-              BuildInParallel="true">
+              BuildInParallel="false">
       <Output TaskParameter="TargetOutputs" ItemName="HelixPayload" />
     </MSBuild>
     <ItemGroup>
