@@ -19,6 +19,7 @@
     <IsProductPackage>true</IsProductPackage>
     <IsPackable>false</IsPackable>
     <EnableSourceLink>false</EnableSourceLink>
+    <GenerateSourceLinkFile>false</GenerateSourceLinkFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
 
