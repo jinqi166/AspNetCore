@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <IsProductPackage>true</IsProductPackage>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>false</IsTestProject>
-    <AddImplicitReferences>false</AddImplicitReferences>
-  </PropertyGroup>
-  <PropertyGroup>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <UseCodebase>true</UseCodebase>
@@ -16,7 +10,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <!-- Other projects should not reference this assembly. It is only meaning to be used in Visual Studio. -->
     <IsProjectReferenceProvider>false</IsProjectReferenceProvider>
-    <IsProductPackage>true</IsProductPackage>
+    <IsShippingPackage>true</IsShippingPackage>
     <IsPackable>false</IsPackable>
     <EnableSourceLink>false</EnableSourceLink>
     <GenerateSourceLinkFile>false</GenerateSourceLinkFile>
@@ -37,15 +31,17 @@
 
       VS needs this build number to be parsable by System.Version, so it can't have any letters.
     -->
-    <VsixVersion>16.0.0</VsixVersion>
-    <VsixVersion Condition="'$(BuildNumber)'!='' AND '$(BuildNumber)'!='t000'">$(VsixVersion).$(BuildNumber)</VsixVersion>
-    <VsixVersion Condition="'$(BuildNumber)'=='' AND '$(CI)'!='true'">$(VsixVersion).999999</VsixVersion>
-    <VsixVersion Condition="'$(BuildNumber)'=='' AND '$(CI)'=='true'">$(VsixVersion).ERROR-MISSING_BUILD_NUMBER</VsixVersion>
+    <VsixVersionPrefix>16.0.0</VsixVersionPrefix>
+    <VsixVersion Condition="'$(BuildNumberSuffix)'!='' AND '$(BuildNumberSuffix)'!='t000'">$(VsixVersionPrefix).$(BuildNumberSuffix)</VsixVersion>
+    <VsixVersion Condition="'$(BuildNumberSuffix)'=='t000'">$(VsixVersionPrefix).999999</VsixVersion>
   </PropertyGroup>
   <!--
     Used by the .vsixmanifest to insert the the VSIX version based on $(VsixVersion)
   -->
-  <Target Name="GetBuildVersion" Outputs="$(VsixVersion)" />
+  <Target Name="GetBuildVersion" Outputs="$(VsixVersion)">
+    <Error Text="VsixVersion not set. BuildNumber='$(BuildNumber)'" Condition="'$(VsixVersion)'==''" />
+  </Target>
+
   <PropertyGroup>
     <!-- Use the same experimental hive as Roslyn and Razor. This makes it easy to mix private builds. -->
     <StartAction>Program</StartAction>
